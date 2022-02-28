@@ -9,7 +9,7 @@ readme = "README.md"
 pyplexity = "pyplexity.__main__:app"
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.6.1"
 typer = {extras = ["all"], version = "^0.4.0"}
 Flask = "^2.0.2"
 nltk = "^3.6.7"
@@ -20,6 +20,7 @@ memory-tempfile = "^2.2.3"
 warcio = "^1.7.4"
 html5lib = "^1.1"
 lxml = "^4.7.1"
+cached-path = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

@@ -6,11 +6,10 @@ from pathlib import Path
 import typer
 import multiprocessing
 
+from pyplexity.PerlPerplexityComputer import PerplexityComputer, PerplexityProcessor
 from tqdm import tqdm
 
 from pyplexity import distributed_files_server
-from pyplexity.PerlPerplexityComputer import TrigramPerplexityComputer, BigramPerplexityComputer, \
-    PerplexityProcessor
 from pyplexity.dataset_processor.dataset_processor import DatasetProcessor
 from pyplexity.tag_remover import HTMLTagRemover
 
@@ -36,9 +35,8 @@ def fileserver(base_dir: str = '../../data/warc', port: int = 8866):
 
 
 @app.command()
-def bulk_perplexity(perpl_model: str = '../../trec-pipeline-2021/nlp-improvements/perplexity/models/bigrams_cord19.st',
+def bulk_perplexity(model: str = 'bigrams-bnc',
                     perpl_limit: float = 2000.0,
-                    trigrams: bool = typer.Option(False, "--trigrams"),
                     base_dir: str = '../data/warc',
                     output_dir: str = '../data/warc_out',
                     warc_input: bool = False,
@@ -46,10 +44,7 @@ def bulk_perplexity(perpl_model: str = '../../trec-pipeline-2021/nlp-improvement
                     n_workers: int = 1,
                     node: int = 1,
                     port: int = 8866):
-    if trigrams:
-        perpl_computer = TrigramPerplexityComputer(perpl_model)
-    else:
-        perpl_computer = BigramPerplexityComputer(perpl_model)
+    perpl_computer = PerplexityComputer.from_str(model)
     content_processor = PerplexityProcessor(perpl_computer, perpl_limit)
     processor = DatasetProcessor(base_dir=base_dir, output_dir=output_dir, content_processor=content_processor)
     execute_processor(base_dir, distributed, n_workers, node, port, processor, warc_input)
@@ -57,12 +52,8 @@ def bulk_perplexity(perpl_model: str = '../../trec-pipeline-2021/nlp-improvement
 
 @app.command()
 def perplexity(text: str,
-               perpl_model: str = '../../trec-pipeline-2021/nlp-improvements/perplexity/models/bigrams_cord19.st',
-               trigrams: bool = typer.Option(False, "--trigrams")):
-    if trigrams:
-        perpl_computer = TrigramPerplexityComputer(perpl_model)
-    else:
-        perpl_computer = BigramPerplexityComputer(perpl_model)
+               model: str = 'bigrams-bnc'):
+    perpl_computer = PerplexityComputer.from_str(model)
     typer.echo(perpl_computer.compute_sentence(text))
 
 

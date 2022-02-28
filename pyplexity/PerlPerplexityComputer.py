@@ -1,9 +1,12 @@
 import math
 import re
 import signal
+import tempfile
 
 import nltk
 import pandas
+import requests
+from cached_path import cached_path
 from storable import retrieve
 
 from pyplexity.dataset_processor.dataset_processor import ContentProcessor
@@ -59,11 +62,24 @@ class PerplexityComputer:
         x = re.sub(r'\s+', ' ', x).strip()
         return x.split(' ')
 
+    @classmethod
+    def from_str(cls, perpl_model: str):
+        print("Loading model... ", end='', flush=True)
+        try:
+            data = retrieve(perpl_model)
+        except FileNotFoundError:
+            file = cached_path(
+                "https://gitlab.citius.usc.es/pyplexity/pyplexity.pages.citius.usc.es/-/raw/master/" + perpl_model.replace(
+                    "-", "_") + ".st")
+            data = retrieve(file)
+        if len(data) > 2:
+            return TrigramPerplexityComputer(data)
+        else:
+            return BigramPerplexityComputer(data)
+
 
 class BigramPerplexityComputer(PerplexityComputer):
-    def __init__(self, bigrams_model_path):
-        print("Loading bigram model... ", end='', flush=True)
-        data = retrieve(bigrams_model_path)
+    def __init__(self, data):
         self.bigrams: dict = data[0]
         self.unigrams: dict = data[1]
         print("Done.")
@@ -83,9 +99,7 @@ class BigramPerplexityComputer(PerplexityComputer):
 
 
 class TrigramPerplexityComputer(PerplexityComputer):
-    def __init__(self, bigrams_model_path):
-        print("Loading trigram model... ", end='', flush=True)
-        data = retrieve(bigrams_model_path)
+    def __init__(self, data):
         self.trigrams: dict = data[0]
         self.bigrams: dict = data[1]
         self.unigrams: dict = data[2]
