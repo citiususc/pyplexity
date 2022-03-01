@@ -22,11 +22,18 @@ Two different datasets were selected to build the background language model (LM)
 
 ## Installation process
 
-This package can be directly found in [Pypi](https://pypi.org/project/pyplexity/) repository or: 
+This package can be directly found in [Pypi](https://pypi.org/project/pyplexity/) repository or installed in two ways: 
 
 ```
 python3 -m pip install pyplexity
 ```
+or
+
+```
+pip install -r requirements.txt
+python setup.py install
+```
+
 ## Examples of usage options
 
 ### Compute perplexity from console
