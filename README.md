@@ -1,7 +1,7 @@
 # Pyplexity
 
-This package provides a simple interface to apply perplexity filters to any document. A possible use case for this technology could be the removal of boilerplate. 
-Furthermore, it provides a WARC and HTML bulk processor, with distributed capabilities.
+This package provides a simple interface to apply perplexity filters to any document. A possible use case for this technology could be the removal of boilerplate (sentences with a high perplexity score). 
+Furthermore, it provides a rough HTML tag cleaner and a WARC and HTML bulk processor, with distributed capabilities.
 
 ![](imgs/perpl.PNG)
 
@@ -14,7 +14,16 @@ Memory intensive but does not scale on CPU.
 | trigrams-cord19 | 6,6GB | 1GB | x |
 | trigrams-bnc | 14GB | 2,2GB | x |
 
+Two different datasets were selected to build the background language model: CORD-19 dataset [1] and the British National Corpus (BNC) [2]. 
+
+[1] Wang, L. L., Lo, K., Chandrasekhar, Y., Reas, R., Yang, J., Eide, D., ... & Kohlmeier, S. (2020). Cord-19: The covid-19 open research dataset. ArXiv.
+
+[2] BNC Consortium. (2007). British national corpus. Oxford Text Archive Core Collection.
+
 ## Installation process
+
+This package can be directly found in [Pypi](https://pypi.org/project/pyplexity/) repository or: 
+
 ```
 python3 -m pip install pyplexity
 ```
@@ -112,3 +121,8 @@ source $HOME/.poetry/env
 poetry build
 pip3 install dist/pyplexity-X.X.X-py3-none-any.whl
 ```
+
+## Cite
+
+Bibtex
+
