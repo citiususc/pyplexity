@@ -1,4 +1,4 @@
-# Pyplexity
+# PyPlexity
 
 This package provides a simple interface to apply perplexity filters to any document. A possible use case for this technology could be the removal of boilerplate (sentences with a high perplexity score). 
 Furthermore, it provides a rough HTML tag cleaner and a WARC and HTML bulk processor, with distributed capabilities.
