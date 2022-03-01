@@ -1,0 +1,3 @@
+[console_scripts]
+pyplexity = pyplexity.__main__:app
+
