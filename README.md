@@ -128,8 +128,21 @@ Computed 1124 files in 0:00:00.543175.
 
 We also offer the possibility of utilising *pyplexity* from Python code. As an example, we provide an API that serves a web app to make some small tests on how to directly clean texts or raw files.
 
-CODE
+Example: computing the perplexity for a sentence:
+```
+from pyplexity import PerplexityComputer
 
+model = PerplexityModel.from_str("bigrams-cord19")
+perpl = model.compute_sentence("this is normal text")
+```
+Example 2: Cleaning sentences from a text:
+```
+from pyplexity import PerplexityModel, PerplexityProcessor
+
+model = PerplexityModel.from_str("bigrams-cord19")
+text_processor = PerplexityProcessor(perpl_model=model, perpl_limit=8000.0)
+clean_text = text_processor.process("This is a normal sentence. Meanwhile, hjldfuia HTML BODY this one will be deleted LINK URL COUISUDOANLHJWQKEJK")
+```
 URL A LA WEB APP
 
 ## Building the package
