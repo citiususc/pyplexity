@@ -17,11 +17,9 @@
 import math
 import re
 import signal
-import tempfile
 
 import nltk
 import pandas
-import requests
 from cached_path import cached_path
 from storable import retrieve
 
@@ -80,13 +78,13 @@ class PerplexityComputer:
 
     @classmethod
     def from_str(cls, perpl_model: str):
-        print("Loading model... ", end='', flush=True)
         try:
             data = retrieve(perpl_model)
         except FileNotFoundError:
             file = cached_path(
                 "https://gitlab.citius.usc.es/pyplexity/pyplexity.pages.citius.usc.es/-/raw/master/" + perpl_model.replace(
                     "-", "_") + ".st")
+            print("Loading model... ", end='', flush=True)
             data = retrieve(file)
         if len(data) > 2:
             return TrigramPerplexityComputer(data)

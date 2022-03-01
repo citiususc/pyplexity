@@ -33,16 +33,16 @@ app = typer.Typer()
 
 
 @app.command()
-def tag_remover(base_dir: str = '../data/warc',
-                output_dir: str = '../data/warc_out',
+def tag_remover(input_dir: str,
+                output_dir: str = 'out_dir',
                 warc_input: bool = False,
                 distributed: bool = False,
                 n_workers: int = 1,
                 node: int = 1,
                 port: int = 8866,
                 ):
-    processor = DatasetProcessor(base_dir=base_dir, output_dir=output_dir, content_processor=HTMLTagRemover())
-    execute_processor(base_dir, distributed, n_workers, node, port, processor, warc_input)
+    processor = DatasetProcessor(base_dir=input_dir, output_dir=output_dir, content_processor=HTMLTagRemover())
+    execute_processor(input_dir, distributed, n_workers, node, port, processor, warc_input)
 
 
 @app.command()
@@ -51,10 +51,10 @@ def fileserver(base_dir: str = '../../data/warc', port: int = 8866):
 
 
 @app.command()
-def bulk_perplexity(model: str = 'bigrams-bnc',
-                    perpl_limit: float = 2000.0,
-                    base_dir: str = '../data/warc',
-                    output_dir: str = '../data/warc_out',
+def bulk_perplexity(input_dir: str,
+                    output_dir: str = 'out_dir',
+                    model: str = 'bigrams-bnc',
+                    perpl_limit: float = 8000.0,
                     warc_input: bool = False,
                     distributed: bool = False,
                     n_workers: int = 1,
@@ -62,8 +62,8 @@ def bulk_perplexity(model: str = 'bigrams-bnc',
                     port: int = 8866):
     perpl_computer = PerplexityComputer.from_str(model)
     content_processor = PerplexityProcessor(perpl_computer, perpl_limit)
-    processor = DatasetProcessor(base_dir=base_dir, output_dir=output_dir, content_processor=content_processor)
-    execute_processor(base_dir, distributed, n_workers, node, port, processor, warc_input)
+    processor = DatasetProcessor(base_dir=input_dir, output_dir=output_dir, content_processor=content_processor)
+    execute_processor(input_dir, distributed, n_workers, node, port, processor, warc_input)
 
 
 @app.command()
