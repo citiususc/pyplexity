@@ -122,7 +122,7 @@ We will explain the distributed computing capabilities later. Input directory is
 citius@pc:~$ pyplexity tag-remover ./html_source --output-dir ./output
 Computed 1124 files in 0:00:00.543175.
 ```
-## Distributed mode (cluster)
+## Parallel mode (cluster)
 
 ## Interfacing from Python
 
@@ -143,7 +143,7 @@ model = PerplexityModel.from_str("bigrams-cord19")
 text_processor = PerplexityProcessor(perpl_model=model, perpl_limit=8000.0)
 clean_text = text_processor.process("This is a normal sentence. Meanwhile, hjldfuia HTML BODY this one will be deleted LINK URL COUISUDOANLHJWQKEJK")
 ```
-URL A LA WEB APP
+We also provide a [web demo](https://tec.citius.usc.es/pyplexity/) as a simple example of the power of our tool
 
 ## Building the package
 
