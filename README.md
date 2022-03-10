@@ -128,7 +128,7 @@ Computed 1124 files in 0:00:00.543175.
 
 We also offer the possibility of utilising *pyplexity* from Python code. As an example, we provide an API that serves a web app to make some small tests on how to directly clean texts or raw files.
 
-Example: computing the perplexity for a sentence:
+Example: computing the perplexity score for a sentence:
 ```
 from pyplexity import PerplexityComputer
 
@@ -143,6 +143,17 @@ model = PerplexityModel.from_str("bigrams-cord19")
 text_processor = PerplexityProcessor(perpl_model=model, perpl_limit=8000.0)
 clean_text = text_processor.process("This is a normal sentence. Meanwhile, hjldfuia HTML BODY this one will be deleted LINK URL COUISUDOANLHJWQKEJK")
 ```
+Example 3: Removing HTML tags from a website:
+```
+import requests
+from pyplexity.tag_remover import HTMLTagRemover
+
+html = requests.get("https://example.com").text
+text = HTMLTagRemover().process(html)
+```
+
+
+
 We also provide a [web demo](https://tec.citius.usc.es/pyplexity/) as a simple example of the power of our tool
 
 ## Building the package
