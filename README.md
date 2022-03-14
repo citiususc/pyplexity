@@ -7,12 +7,12 @@ Furthermore, it provides a rough HTML tag cleaner and a WARC and HTML bulk proce
 
 ## Models
 Memory intensive but does not scale on CPU. 
-| Model | RAM usage | Download size | Performance |
-| --- | --- | --- | --- | 
-| bigrams-cord19 | 2GB | 230MB | x |
-| bigrams-bnc | 5GB | 660MB | x |
-| trigrams-cord19 | 6,6GB | 1GB | x |
-| trigrams-bnc | 14GB | 2,2GB | x |
+| Model | RAM usage | Download size |
+| --- | --- | --- |
+| bigrams-cord19 | 2GB | 230MB |
+| bigrams-bnc | 5GB | 660MB |
+| trigrams-cord19 | 6,6GB | 1GB |
+| trigrams-bnc | 14GB | 2,2GB |
 
 Two different datasets were selected to build the background language model (LM): CORD-19 dataset [1] and the British National Corpus (BNC) [2]. 
 
@@ -123,6 +123,15 @@ citius@pc:~$ pyplexity tag-remover ./html_source --output-dir ./output
 Computed 1124 files in 0:00:00.543175.
 ```
 ## Parallel mode (cluster)
+Previous documentation shows that our commands have integrated distributed computing capabilities. When using the cluster mode, all the nodes must be interconnected in a local network, having the access to the same files mounted via SSHFS or other filesystem. A master node will recursively load the folder of files to be computed, with the command:
+```
+pyplexity fileserver /mnt/input_dir --port 8866
+```
+Now, clients from the nodes will connect to the master node asking for file names to be processed. This mechanism allows for load distribution, as clients are able to ask for files in queue for processing from the master. For example, from a node:
+```
+pyplexity bulk-perplexity /mnt/input_dir --output-dir /mnt/output_dir --warc-input --distributed --n-workers 10 --node 2 --url master.local --port 8866
+```
+That command should be executed in every machine of the cluster. The node argument identifies the machine for logging purposes, and has no functional relevance. The n-workers argument controls the number of thread workers per machine that will be querying the master node for files concurrently. When the master server has served all the files, worker procceses will shutdown accordingly. In our experiments, we use this feature to run the HTML tag removal and perplexity computation in 20 threads * 15 machines.
 
 ## Interfacing from Python
 
@@ -151,10 +160,12 @@ from pyplexity.tag_remover import HTMLTagRemover
 html = requests.get("https://example.com").text
 text = HTMLTagRemover().process(html)
 ```
+## Web Demo
+We also provide a [web demo](https://tec.citius.usc.es/pyplexity/) as a simple example of the power of our tool. Screenshot:
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/6536835/158210142-c0b04512-f482-49fc-9261-adb15628984f.png" alt="screenshot" width="600"/>
+</p>
 
-
-
-We also provide a [web demo](https://tec.citius.usc.es/pyplexity/) as a simple example of the power of our tool
 
 ## Building the package
 
