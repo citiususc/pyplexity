@@ -1,19 +1,3 @@
-# PyPlexity
-# Copyright (C) 2022 Manuel Prada Corral
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 import datetime
 import os
 import time
@@ -22,7 +6,7 @@ from pathlib import Path
 import typer
 import multiprocessing
 
-from pyplexity.PerlPerplexityComputer import PerplexityComputer, PerplexityProcessor
+from pyplexity.perpl_model import PerplexityModel, PerplexityProcessor
 from tqdm import tqdm
 
 from pyplexity import distributed_files_server
@@ -60,7 +44,7 @@ def bulk_perplexity(input_dir: str,
                     n_workers: int = 1,
                     node: int = 1,
                     port: int = 8866):
-    perpl_computer = PerplexityComputer.from_str(model)
+    perpl_computer = PerplexityModel.from_str(model)
     content_processor = PerplexityProcessor(perpl_computer, perpl_limit)
     processor = DatasetProcessor(base_dir=input_dir, output_dir=output_dir, content_processor=content_processor)
     execute_processor(input_dir, distributed, n_workers, node, port, processor, warc_input)
@@ -69,7 +53,7 @@ def bulk_perplexity(input_dir: str,
 @app.command()
 def perplexity(text: str,
                model: str = 'bigrams-bnc'):
-    perpl_computer = PerplexityComputer.from_str(model)
+    perpl_computer = PerplexityModel.from_str(model)
     typer.echo(perpl_computer.compute_sentence(text))
 
 
