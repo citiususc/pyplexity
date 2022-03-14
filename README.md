@@ -22,11 +22,18 @@ Two different datasets were selected to build the background language model (LM)
 
 ## Installation process
 
-This package can be directly found in [Pypi](https://pypi.org/project/pyplexity/) repository or: 
+This package can be directly found in [Pypi](https://pypi.org/project/pyplexity/) repository or installed in two ways: 
 
 ```
 python3 -m pip install pyplexity
 ```
+or
+
+```
+pip install -r requirements.txt
+python setup.py install
+```
+
 ## Examples of usage options
 
 ### Compute perplexity from console
@@ -115,15 +122,39 @@ We will explain the distributed computing capabilities later. Input directory is
 citius@pc:~$ pyplexity tag-remover ./html_source --output-dir ./output
 Computed 1124 files in 0:00:00.543175.
 ```
-## Distributed mode (cluster)
+## Parallel mode (cluster)
 
 ## Interfacing from Python
 
 We also offer the possibility of utilising *pyplexity* from Python code. As an example, we provide an API that serves a web app to make some small tests on how to directly clean texts or raw files.
 
-CODE
+Example: computing the perplexity score for a sentence:
+```
+from pyplexity import PerplexityComputer
 
-URL A LA WEB APP
+model = PerplexityModel.from_str("bigrams-cord19")
+perpl = model.compute_sentence("this is normal text")
+```
+Example 2: Cleaning sentences from a text:
+```
+from pyplexity import PerplexityModel, PerplexityProcessor
+
+model = PerplexityModel.from_str("bigrams-cord19")
+text_processor = PerplexityProcessor(perpl_model=model, perpl_limit=8000.0)
+clean_text = text_processor.process("This is a normal sentence. Meanwhile, hjldfuia HTML BODY this one will be deleted LINK URL COUISUDOANLHJWQKEJK")
+```
+Example 3: Removing HTML tags from a website:
+```
+import requests
+from pyplexity.tag_remover import HTMLTagRemover
+
+html = requests.get("https://example.com").text
+text = HTMLTagRemover().process(html)
+```
+
+
+
+We also provide a [web demo](https://tec.citius.usc.es/pyplexity/) as a simple example of the power of our tool
 
 ## Building the package
 
