@@ -42,14 +42,14 @@ class DatasetProcessor:
         self.output_dir = Path(output_dir)
         self.content_processor = content_processor
 
-    def batch_process_from_server(self, process_number, port):
+    def batch_process_from_server(self, process_number, url, port):
         print(f"P{process_number} computing warc files...")
-        file = requests.get(f"http://master:{port}/files").text  # get filenames to process from master node REST API
+        file = requests.get(f"http://{url}:{port}/files").text  # get filenames to process from master node REST API
         i = 0
         start = time.time()
         while file != "END":
             self.process_single_file(file, i, process_number, True)
-            file = requests.get(f"http://master:{port}/files").text  # ask for a new WARC file to process
+            file = requests.get(f"http://{url}:{port}/files").text  # ask for a new WARC file to process
             i += 1
         print(f"P{process_number} computed {i} warc files in {str(datetime.timedelta(seconds=time.time() - start))}.")
 

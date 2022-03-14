@@ -39,10 +39,11 @@ def tag_remover(input_dir: str,
                 distributed: bool = False,
                 n_workers: int = 1,
                 node: int = 1,
+                url: str = "master",
                 port: int = 8866,
                 ):
     processor = DatasetProcessor(base_dir=input_dir, output_dir=output_dir, content_processor=HTMLTagRemover())
-    execute_processor(input_dir, distributed, n_workers, node, port, processor, warc_input)
+    execute_processor(input_dir, distributed, n_workers, node, url, port, processor, warc_input)
 
 
 @app.command()
@@ -59,11 +60,12 @@ def bulk_perplexity(input_dir: str,
                     distributed: bool = False,
                     n_workers: int = 1,
                     node: int = 1,
+                    url: str = "master",
                     port: int = 8866):
     perpl_computer = PerplexityModel.from_str(model)
     content_processor = PerplexityProcessor(perpl_computer, perpl_limit)
     processor = DatasetProcessor(base_dir=input_dir, output_dir=output_dir, content_processor=content_processor)
-    execute_processor(input_dir, distributed, n_workers, node, port, processor, warc_input)
+    execute_processor(input_dir, distributed, n_workers, node, url, port, processor, warc_input)
 
 
 @app.command()
@@ -73,7 +75,7 @@ def perplexity(text: str,
     typer.echo(perpl_computer.compute_sentence(text))
 
 
-def execute_processor(base_dir, distributed, n_workers, node, port, processor, warc_input):
+def execute_processor(base_dir, distributed, n_workers, node, url, port, processor, warc_input):
     if not distributed:
         extension = ".warc.gz" if warc_input else ""
         files = [i for i in Path(base_dir).glob('**/*' + extension) if i.is_file()]
@@ -85,7 +87,7 @@ def execute_processor(base_dir, distributed, n_workers, node, port, processor, w
         jobs = []
         print(f"Master thread from node{node}, PID {os.getpid()}")
         for i in range(n_workers):
-            j = multiprocessing.Process(target=processor.batch_process_from_server, args=(i + 1, port))
+            j = multiprocessing.Process(target=processor.batch_process_from_server, args=(i + 1, url, port))
             jobs.append(j)
         for j in jobs:
             j.start()
