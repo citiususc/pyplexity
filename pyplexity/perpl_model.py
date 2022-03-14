@@ -17,6 +17,7 @@
 import math
 import re
 import signal
+from typing import Union
 
 import nltk
 import pandas
@@ -28,7 +29,7 @@ from pyplexity.dataset_processor.dataset_processor import ContentProcessor
 
 class PerplexityProcessor(ContentProcessor):
 
-    def process(self, content: bytes) -> str:
+    def process(self, content: Union[str, bytes]) -> str:
         if not isinstance(content, str):
             content = content.decode(errors='ignore')
         new_content = ""
@@ -47,7 +48,7 @@ class PerplexityProcessor(ContentProcessor):
         self.perpl_limit = perpl_limit
 
 
-class PerplexityComputer:
+class PerplexityModel:
     def compute_sentence(self, sentence: str) -> float:
         pass
 
@@ -76,8 +77,8 @@ class PerplexityComputer:
         x = re.sub(r'\s+', ' ', x).strip()
         return x.split(' ')
 
-    @classmethod
-    def from_str(cls, perpl_model: str):
+    @staticmethod
+    def from_str(perpl_model: str):
         try:
             data = retrieve(perpl_model)
         except FileNotFoundError:
@@ -87,12 +88,12 @@ class PerplexityComputer:
             print("Loading model... ", end='', flush=True)
             data = retrieve(file)
         if len(data) > 2:
-            return TrigramPerplexityComputer(data)
+            return TrigramPerplexityModel(data)
         else:
-            return BigramPerplexityComputer(data)
+            return BigramPerplexityModel(data)
 
 
-class BigramPerplexityComputer(PerplexityComputer):
+class BigramPerplexityModel(PerplexityModel):
     def __init__(self, data):
         self.bigrams: dict = data[0]
         self.unigrams: dict = data[1]
@@ -112,7 +113,7 @@ class BigramPerplexityComputer(PerplexityComputer):
         return perplexity
 
 
-class TrigramPerplexityComputer(PerplexityComputer):
+class TrigramPerplexityModel(PerplexityModel):
     def __init__(self, data):
         self.trigrams: dict = data[0]
         self.bigrams: dict = data[1]
@@ -137,7 +138,7 @@ class TrigramPerplexityComputer(PerplexityComputer):
 
 if __name__ == '__main__':
     bigrams_model_path = "../trec-pipeline-2021/nlp-improvements/perplexity/models/bigrams_cord19.st"
-    computer = BigramPerplexityComputer(bigrams_model_path)
+    computer = BigramPerplexityModel(bigrams_model_path)
     input = pandas.read_csv("raw_sentences.txt", sep=',', names=["id", "text"])
     for _, row in input.iterrows():
         new_ppl = computer.compute_sentence(row.text)
