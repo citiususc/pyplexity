@@ -185,5 +185,13 @@ As you may have noticed, this is an unsupervised method that requires setting th
 
 ## Cite
 
-Bibtex
+@article{fernández-pichel_prada-corral_losada_pichel_gamallo_2023, 
+title={An unsupervised perplexity-based method for boilerplate removal}, 
+DOI={10.1017/S1351324923000049}, 
+journal={Natural Language Engineering}, 
+publisher={Cambridge University Press}, 
+author={Fernández-Pichel, Marcos and Prada-Corral, Manuel and Losada, David E. and Pichel, Juan C. and Gamallo, Pablo}, 
+year={2023}, 
+pages={1–18}
+}
 
