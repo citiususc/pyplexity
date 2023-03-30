@@ -1,9 +1,22 @@
 # PyPlexity
 
+<p align="center">
+    <a href="https://pepy.tech/project/pyplexity/"><img alt="Downloads" src="https://img.shields.io/badge/dynamic/json?style=flat-square&maxAge=3600&label=downloads&query=$.total_downloads&url=https://api.pepy.tech/api/projects/pyplexity"></a>
+    <a href="https://pypi.python.org/pypi/pyplexity/"><img alt="PyPi" src="https://img.shields.io/pypi/v/pyplexity.svg?style=flat-square"></a>
+</p>
+
+
 This package provides a simple interface to apply perplexity filters to any document. A possible use case for this technology could be the removal of boilerplate (sentences with a high perplexity score). 
 Furthermore, it provides a rough HTML tag cleaner and a WARC and HTML bulk processor, with distributed capabilities.
 
 ![](imgs/perpl.PNG)
+
+## Cite
+
+Anyone that uses this tool, please refer to:
+
+Fernández-Pichel, M., Prada-Corral, M., Losada, D. E., Pichel, J. C., & Gamallo, P. (2023). [An unsupervised perplexity-based method for boilerplate removal. Natural Language Engineering](https://www.cambridge.org/core/journals/natural-language-engineering/article/an-unsupervised-perplexitybased-method-for-boilerplate-removal/5E589D838F1D1E0736B4F52001150339), 1-18.
+
 
 ## Models
 Memory intensive but does not scale on CPU. 
@@ -181,17 +194,5 @@ pip3 install dist/pyplexity-X.X.X-py3-none-any.whl
 
 ## General Advice
 
-As you may have noticed, this is an unsupervised method that requires setting the optimal model and threshold. From our experimentation (**PONER REF**), we have concluded that the bigrams-bnc model and removing sentences with a value higher than 8k is a robust strategy both for an IR search task and a text classification task.
-
-## Cite
-
-@article{fernández-pichel_prada-corral_losada_pichel_gamallo_2023, 
-title={An unsupervised perplexity-based method for boilerplate removal}, 
-DOI={10.1017/S1351324923000049}, 
-journal={Natural Language Engineering}, 
-publisher={Cambridge University Press}, 
-author={Fernández-Pichel, Marcos and Prada-Corral, Manuel and Losada, David E. and Pichel, Juan C. and Gamallo, Pablo}, 
-year={2023}, 
-pages={1–18}
-}
+As you may have noticed, this is an unsupervised method that requires setting the optimal model and threshold. From our [experimentation](https://www.cambridge.org/core/journals/natural-language-engineering/article/an-unsupervised-perplexitybased-method-for-boilerplate-removal/5E589D838F1D1E0736B4F52001150339), we have concluded that the bigrams-bnc model and removing sentences with a value higher than 8k is a robust strategy both for an IR search task and a text classification task.
 
