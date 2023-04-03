@@ -186,7 +186,7 @@ If you are interested, you can also build the same package version we have curre
 
 ```
 git clone https://github.com/citiususc/pyplexity && cd pyplexity
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -
+curl -sSL https://install.python-poetry.org | python3 -
 source $HOME/.poetry/env
 poetry build
 pip3 install dist/pyplexity-X.X.X-py3-none-any.whl
