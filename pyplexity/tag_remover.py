@@ -30,7 +30,9 @@ class HTMLTagRemover(ContentProcessor):
         self.build_text_list = etree.XPath("//text()")
 
     def _remove_html_tags_lxml(self, content):
-        content = content.decode(errors="ignore").encode("ascii", errors="ignore")
+        if isinstance(content, (bytes, bytearray)):
+            content = decode(errors="ignore")
+        content = content.encode("ascii", errors="ignore")
         try:
             html: HtmlElement = lxml.html.document_fromstring(content)
         except etree.ParserError:
