@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyplexity"
-version = "0.2.9"
+version = "0.2.10"
 description = "Perplexity filter for documents and bulk HTML and WARC boilerplate removal."
 authors = ["Manuel de Prada Corral <manuel.deprada.corral@usc.es>", "Marcos Fernández Pichel <marcosfernandez.pichel@usc.es>"]
 readme = "README.md"
