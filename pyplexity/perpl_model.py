@@ -56,17 +56,17 @@ class PerplexityProcessor(ContentProcessor):
             content = content.decode(errors="ignore")
         new_content = ""
         signal.alarm(60 * 5)  # 5mins timeout
-        # it = nltk.sent_tokenize(content)  # timeout-limited code
-        it = self.split_sentences_by_size(sentences=content.split("."))
+        it = nltk.sent_tokenize(content)  # timeout-limited code
+        # it = self.split_sentences_by_size(sentences=content.split("."))
         #print(it)
         signal.alarm(0)  # cancel timeout
         for sent in it:
             perpl_score = self.perpl_model.compute_sentence(sent)
-            # print(f"{len(sent)} {perpl_score}")
+            # print(f"{sent} {perpl_score}")
             if perpl_score < self.perpl_limit:
-                new_content += ". " + sent
+                new_content += " " + sent
             else:
-                new_content += f". <ppl {perpl_score}>{sent}</ppl>"
+                new_content += f"<ppl {perpl_score}>{sent}</ppl>."
         return new_content
 
 
