@@ -13,6 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# -*- coding: utf-8 -*-
 
 import zlib
 
@@ -124,7 +125,6 @@ class BaseWARCWriter(RecordBuilder):
 
         out.flush()
 
-
 # ============================================================================
 class GzippingWrapper(object):
     def __init__(self, out):
@@ -132,8 +132,8 @@ class GzippingWrapper(object):
         self.out = out
 
     def write(self, buff):
-        # if isinstance(buff, str):
-        #    buff = buff.encode('utf-8')
+        if isinstance(buff, str):
+            buff = buff.encode('utf-8')
         buff = self.compressor.compress(buff)
         self.out.write(buff)
 

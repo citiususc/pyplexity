@@ -31,7 +31,7 @@ class HTMLTagRemover(ContentProcessor):
 
     def _remove_html_tags_lxml(self, content):
         if isinstance(content, (bytes, bytearray)):
-            content = decode(errors="ignore")
+            content = content.decode(errors="ignore")
         content = content.encode("ascii", errors="ignore")
         try:
             html: HtmlElement = lxml.html.document_fromstring(content)

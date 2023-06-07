@@ -55,6 +55,7 @@ class DatasetProcessor:
 
     def process_single_file(self, file, i, process_number, warc_file):
         in_file = self.base_dir / file
+        #print(in_file)
         out_file = self.output_dir / file
         out_file.parent.mkdir(parents=True, exist_ok=True)
         if i % 100 == 0:  # log some of the files
@@ -63,9 +64,10 @@ class DatasetProcessor:
             self.process_warc_file(in_file, out_file, i, process_number)
         else:
             with open(in_file, 'rb') as in_file, open(out_file, 'w') as out_file:
-                sanitized_input = in_file.read().decode(errors="ignore").encode("ascii", errors="ignore")
+                sanitized_input = in_file.read().decode(errors="ignore").encode('utf-8', errors='ignore')
                 processed_text = self.content_processor.process(sanitized_input)
                 out_file.write(processed_text)
+                #print(sanitized_input)
 
     def process_warc_file(self, in_file, out_file, i, process_number):
         memfile_generator = MemoryTempfile()  # mem tempfiles generator so its faster than disk files
