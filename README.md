@@ -19,6 +19,9 @@ Fernández-Pichel, M., Prada-Corral, M., Losada, D. E., Pichel, J. C., & Gamallo
 
 
 ## Models
+
+### English language
+
 Memory intensive but does not scale on CPU. 
 | Model | RAM usage | Download size |
 | --- | --- | --- |
@@ -33,18 +36,20 @@ Two different datasets were selected to build the background language model (LM)
 
 [2] BNC Consortium. (2007). British national corpus. Oxford Text Archive Core Collection.
 
+### Galician language
+
+COMING SOON. Support for minority languages, [Nós project](http://nos.gal/es/proxecto-nos). You can download the model from [here](https://fegalaz.usc.es/~gamallo/bigrams_modelo-gl-bigramas-merged.st).
+
+### Build and use custom models
+
+If you want to build your own models, you can check it [here](https://github.com/gamallo/LanguageModel). You can also use the parameter **--model PATH** to load local models.
+
 ## Installation process
 
 This package can be directly found in [Pypi](https://pypi.org/project/pyplexity/) repository or installed in two ways: 
 
 ```
-python3 -m pip install pyplexity
-```
-or
-
-```
-pip install -r requirements.txt
-python setup.py install
+pip install pyplexity
 ```
 
 ## Examples of usage options
@@ -106,6 +111,8 @@ downloading: 100%|##########| 233M/233M [00:03<00:00, 63.3MiB/s]
 Loading model... Done.
 Computed 1124 files in 0:00:01.905390.
 ```
+
+**NOTE**: In this new version, we do not remove the malformed sentences. We just tag them with **ppl**, giving more control to the end-users.
 
 ### Perform HTML tag cleaning of a directory
 
